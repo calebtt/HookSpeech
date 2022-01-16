@@ -24,7 +24,13 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SendKey.h">
+    <ClInclude Include="SendAlphabet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="apifuncs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SendKeyInput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

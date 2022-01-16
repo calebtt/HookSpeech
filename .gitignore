@@ -41,3 +41,11 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+/HookProcDLL/.vs/HookProcDLL/v16/.suo
+/HookProcDLL/.vs/HookProcDLL/v16/Browse.VC.db
+/HookProcDLL/.vs/HookProcDLL/v16/Solution.VC.db
+/HookProcDLL/x64/Debug/HookProcDLL.tlog
+/HookProcDLL/x64/Debug
+/HookSpeechSharp/bin/Debug/net6.0-windows
+/HookSpeechSharp/obj
+/.vs
