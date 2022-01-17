@@ -4,14 +4,17 @@
 #include <fstream>
 #include <format>
 #include <atomic>
+#include <mutex>
+
 extern "C"
 {
 	namespace StaticInstance
 	{
+		using LockType = std::scoped_lock <std::mutex>;
+		inline static std::mutex locker;
 		inline static sds::SendAlphabet sender;
 		inline static std::string workingAlphabetChars;
 		inline static std::wstring translationAlphabetChars;
-		//inline static HHOOK hookHandle = NULL;
 		inline static std::atomic<HHOOK> hookHandle = NULL;
 		inline static constexpr size_t SZ_MODULE_NAME = 512;
 	}
@@ -28,32 +31,36 @@ extern "C"
 	// Exported Interface Section.
 	__declspec(dllexport) inline bool SetTranslationAlphabet(const wchar_t *str)
 	{
+		StaticInstance::LockType tempLock(StaticInstance::locker);
 		StaticInstance::translationAlphabetChars = std::wstring(str);
 		return StaticInstance::sender.UpdateTranslationAlphabet(StaticInstance::translationAlphabetChars);
 	}
 	__declspec(dllexport) inline bool SetWorkingAlphabet(const char *str)
 	{
+		StaticInstance::LockType tempLock(StaticInstance::locker);
 		StaticInstance::workingAlphabetChars = std::string(str);
 		return StaticInstance::sender.UpdateWorkingAlphabet(StaticInstance::workingAlphabetChars);
 	}
 	__declspec(dllexport) inline const wchar_t* GetTranslationAlphabet()
 	{
-		// returning address of static instance data, copy it where used.
+		StaticInstance::LockType tempLock(StaticInstance::locker);
 		StaticInstance::translationAlphabetChars = StaticInstance::sender.GetTranslationAlphabet();
 		return StaticInstance::translationAlphabetChars.c_str();
 	}
 	__declspec(dllexport) inline const char* GetWorkingAlphabet()
 	{
-		// returning address of static instance data, copy it where used.
+		StaticInstance::LockType tempLock(StaticInstance::locker);
 		StaticInstance::workingAlphabetChars = StaticInstance::sender.GetWorkingAlphabet();
 		return StaticInstance::workingAlphabetChars.c_str();
 	}
 	__declspec(dllexport) inline bool IsHooked()
 	{
+		StaticInstance::LockType tempLock(StaticInstance::locker);
 		return StaticInstance::hookHandle;
 	}
 	__declspec(dllexport) inline bool AddHooks()
 	{
+		StaticInstance::LockType tempLock(StaticInstance::locker);
 		if (!StaticInstance::hookHandle)
 		{
 			char moduleName[StaticInstance::SZ_MODULE_NAME]{};
@@ -67,6 +74,7 @@ extern "C"
 	{
 		//From Winapi docs, it's more of a fire and forget because it can be in the state of processing
 		//a key event and not unhook immediately.
+		StaticInstance::LockType tempLock(StaticInstance::locker);
 		::UnhookWindowsHookEx(StaticInstance::hookHandle);
 		StaticInstance::hookHandle = NULL;
 		return true;
