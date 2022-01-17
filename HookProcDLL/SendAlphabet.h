@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include "stdafx.h"
 #include "SendKeyInput.h"
-#include <fstream>
 namespace sds
 {
 	class SendAlphabet
