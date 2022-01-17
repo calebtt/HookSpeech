@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace HookSpeechSharp
 {
     public partial class HssMainForm : Form
@@ -12,51 +14,51 @@ namespace HookSpeechSharp
             InitializeComponent();
             HookProcDllWrapper.AddHooks();
             UpdateTranslationBox();
-            BuildTextBoxes();
+            InitTextBoxes();
         }
-        private void BuildTextBoxes()
+
+        private string BuildStringFromTextBoxes()
+        {
+            StringBuilder sb = new();
+            for (int i = NumElements; i < NumElements*2; i++)
+                sb.Append(flowLayoutPanel1.Controls[i].Text);
+            return sb.ToString();
+        }
+
+        private void InitTextBoxes()
         {
             string working = HookProcDllWrapper.GetWorkingAlphabet();
             string translation = HookProcDllWrapper.GetTranslationAlphabet();
             const int width = 16;
             const int height = 18;
             const float fontSize = 8.5f;
-            for (int i = 0; i < NumElements; i++)
+            //local func
+            void TextBoxLoop(int count, bool isReadOnly, string textContent)
             {
-                TextBox tb1 = new();
-                Font f = new(FontFamily.GenericMonospace, fontSize);
-                tb1.Text = working.ElementAt(i).ToString();
-                tb1.Font = f;
-                tb1.Multiline = false;
-                tb1.BackColor = Color.MediumSpringGreen;
-                tb1.Margin = new(0, 0, 0, 0);
-                tb1.ReadOnly = true;
-                tb1.MaximumSize = new(width, height);
-                tb1.MinimumSize = new(width, height);
-                //tb1.Padding = new(10, 10, 10, 10);
-                tb1.BorderStyle = BorderStyle.FixedSingle;
-                tb1.TextAlign = HorizontalAlignment.Center;
-                tb1.Visible = true;
-                this.flowLayoutPanel1.Controls.Add(tb1);
+                if (count != textContent.Length)
+                    throw new ArgumentException("Dissimilar size in InitTextBoxes()::TextBoxLoop()");
+                for (int i = 0; i < count; i++)
+                {
+                    TextBox tb1 = new();
+                    Font f = new(FontFamily.GenericMonospace, fontSize);
+                    tb1.MaxLength = 1;
+                    tb1.Text = textContent.ElementAt(i).ToString();
+                    tb1.Font = f;
+                    tb1.Multiline = false;
+                    tb1.BackColor = Color.MediumSpringGreen;
+                    tb1.Margin = new(0, 0, 0, 0);
+                    tb1.ReadOnly = isReadOnly;
+                    tb1.MaximumSize = new(width, height);
+                    tb1.MinimumSize = new(width, height);
+                    //tb1.Padding = new(10, 10, 10, 10);
+                    tb1.BorderStyle = BorderStyle.FixedSingle;
+                    tb1.TextAlign = HorizontalAlignment.Center;
+                    tb1.Visible = true;
+                    this.flowLayoutPanel1.Controls.Add(tb1);
+                }
             }
-            for (int i = 0; i < NumElements; i++)
-            {
-                TextBox tb1 = new();
-                Font f = new(FontFamily.GenericMonospace, fontSize);
-                tb1.Text = translation.ElementAt(i).ToString();
-                tb1.Font = f;
-                tb1.Multiline = false;
-                tb1.BackColor = Color.MediumSpringGreen;
-                tb1.Margin = new(0, 0, 0, 0);
-                tb1.ReadOnly = true;
-                tb1.MaximumSize = new(width, height);
-                tb1.MinimumSize = new(width, height);
-                //tb1.Padding = new(10, 10, 10, 10);
-                tb1.BorderStyle = BorderStyle.FixedSingle;
-                tb1.TextAlign = HorizontalAlignment.Center;
-                tb1.Visible = true;
-                this.flowLayoutPanel1.Controls.Add(tb1);
-            }
+            TextBoxLoop(NumElements, true, working);
+            TextBoxLoop(NumElements, false, translation);
         }
 
         private void UpdateTextBoxes()
@@ -68,6 +70,7 @@ namespace HookSpeechSharp
                 this.flowLayoutPanel1.Controls[i].Text = charValue;
             }
         }
+
         private void UpdateTranslationBox()
         {
             tbxAlphabetChars.Text = HookProcDllWrapper.GetTranslationAlphabet();
@@ -93,7 +96,17 @@ namespace HookSpeechSharp
 
         private void btnUpdateAlphabet_Click(object sender, EventArgs e)
         {
-            if(!HookProcDllWrapper.SetTranslationAlphabet(tbxAlphabetChars.Text))
+            //build string from textbox text values
+            string newAlphabet = BuildStringFromTextBoxes();
+            //compare to existing internal translationalphabet
+            bool isSameLength = newAlphabet.Length == HookProcDllWrapper.GetTranslationAlphabet().Length;
+            bool isModified = !newAlphabet.Equals(HookProcDllWrapper.GetTranslationAlphabet());
+            if (isSameLength && isModified)
+            {
+                //set translation alphabet to new values
+                HookProcDllWrapper.SetTranslationAlphabet(newAlphabet);
+            }
+            else if (!HookProcDllWrapper.SetTranslationAlphabet(tbxAlphabetChars.Text))
             {
                 MessageBox.Show(MsgBadTranslation, MsgBadError, MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
             }
