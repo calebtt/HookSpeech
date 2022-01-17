@@ -10,6 +10,7 @@ namespace HookSpeechSharp
         public HssMainForm()
         {
             InitializeComponent();
+            dllWrapper.AddHooks();
             UpdateTranslationBox();
         }
 
@@ -43,6 +44,11 @@ namespace HookSpeechSharp
                 MessageBox.Show(MSG_BAD_TRANSLATION, MSG_BAD_ERROR, MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
             }
             UpdateTranslationBox();
+        }
+
+        private void HssMainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            dllWrapper.RemoveHooks();
         }
     }
 }

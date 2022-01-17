@@ -49,3 +49,6 @@ Temporary Items
 /HookSpeechSharp/bin/Debug/net6.0-windows
 /HookSpeechSharp/obj
 /.vs
+/HookProcDLL/x64/Release
+/HookSpeechSharp/bin/Release/net6.0-windows
+/HookSpeechSharp/Properties/PublishProfiles

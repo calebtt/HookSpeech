@@ -2,6 +2,8 @@
 #include "stdafx.h"
 #include "SendAlphabet.h"
 #include <fstream>
+#include <format>
+#include <atomic>
 extern "C"
 {
 	namespace StaticInstance
@@ -9,7 +11,8 @@ extern "C"
 		inline static sds::SendAlphabet sender;
 		inline static std::string workingAlphabetChars;
 		inline static std::wstring translationAlphabetChars;
-		inline static HHOOK hookHandle = NULL;
+		//inline static HHOOK hookHandle = NULL;
+		inline static std::atomic<HHOOK> hookHandle = NULL;
 		inline static constexpr size_t SZ_MODULE_NAME = 512;
 	}
 	// Forward declarations section.
@@ -62,10 +65,11 @@ extern "C"
 	}
 	__declspec(dllexport) inline bool RemoveHooks()
 	{
-		BOOL res = ::UnhookWindowsHookEx(StaticInstance::hookHandle);
-		if (res)
-			StaticInstance::hookHandle = NULL;
-		return res;
+		//From Winapi docs, it's more of a fire and forget because it can be in the state of processing
+		//a key event and not unhook immediately.
+		::UnhookWindowsHookEx(StaticInstance::hookHandle);
+		StaticInstance::hookHandle = NULL;
+		return true;
 	}
 	//Can be used in the future, a mouse hook procedure.
 	inline LRESULT mouseHookProcedure(int code, WPARAM wParam, LPARAM lParam)

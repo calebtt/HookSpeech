@@ -11,31 +11,44 @@ namespace HookSpeechSharp
     {
         public HookProcDllWrapper()
         {
-            HookProcDllImports.AddHooks();
         }
 
         ~HookProcDllWrapper()
         {
-            HookProcDllImports.RemoveHooks();
+            if (HookProcDllImports.IsHooked())
+                HookProcDllImports.RemoveHooks();
         }
 
         public string GetTranslationAlphabet()
         {
+            bool wasHooked = IsHooked();
+            if (wasHooked)
+                RemoveHooks();
             IntPtr p = HookProcDllImports.GetTranslationAlphabet();
             if (p != IntPtr.Zero)
             {
                 string? retVal = Marshal.PtrToStringUni(p);
+                if (wasHooked)
+                    AddHooks();
                 if (retVal != null)
                     return retVal;
                 else
                     return String.Empty;
             }
+            if (wasHooked)
+                AddHooks();
             return String.Empty;
         }
 
         public bool SetTranslationAlphabet(string newAlphabet)
         {
-            return HookProcDllImports.SetTranslationAlphabet(newAlphabet);
+            bool wasHooked = IsHooked();
+            if (wasHooked)
+                RemoveHooks();
+            bool res = HookProcDllImports.SetTranslationAlphabet(newAlphabet);
+            if (wasHooked)
+                AddHooks();
+            return res;
         }
 
         public string GetWorkingAlphabet()

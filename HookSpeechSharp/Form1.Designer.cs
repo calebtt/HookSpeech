@@ -132,6 +132,7 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "HookSpeechSharp (C) 2022 Caleb T.";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.HssMainForm_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 
