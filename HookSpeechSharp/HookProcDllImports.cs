@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HookSpeechSharp
 {
-    internal class HookProcDllImports
+    internal static class HookProcDllImports
     {
         private const string DllName = "HookProcDLL.dll";
 

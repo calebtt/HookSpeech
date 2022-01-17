@@ -24,5 +24,8 @@
 #include <map>
 #include <thread>
 #include <chrono>
+#include <fstream>
+#include <atomic>
+#include <mutex>
 // Files I want to make sure are compiled into the DLL
 #include "apifuncs.h"

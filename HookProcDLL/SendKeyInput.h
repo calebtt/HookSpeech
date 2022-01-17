@@ -9,7 +9,7 @@ namespace sds::Utilities
 		/// <summary>Sends the virtual keycode as a unicode keypress.</summary>
 		/// <param name="vk"> is the Virtual Keycode of the keystroke you wish to emulate </param>
 		/// <param name="down"> is a boolean denoting if the keypress event is KEYDOWN or KEYUP</param>
-		void SendUnicode(const int vk, const bool down) const noexcept
+		static void SendUnicode(const int vk, const bool down) noexcept
 		{
 			INPUT tempInput{};
 			if(vk)
@@ -31,12 +31,12 @@ namespace sds::Utilities
 		/// This is useful for debugging or re-routing the output for logging/testing of a real-time system.</summary>
 		/// <param name="inp">Pointer to first element of INPUT array.</param>
 		/// <param name="numSent">Number of elements in the array to send.</param>
-		UINT CallSendInput(INPUT* inp, const size_t numSent) const noexcept
+		static UINT CallSendInput(INPUT* inp, const size_t numSent) noexcept
 		{
 			return SendInput(static_cast<UINT>(numSent), inp, sizeof(INPUT));
 		}
 	private:
-		void LogError(std::string err) const noexcept
+		static void LogError(std::string err) noexcept
 		{
 			//std::cerr << err << std::endl;
 		}

@@ -1,10 +1,6 @@
 #pragma once
 #include "stdafx.h"
 #include "SendAlphabet.h"
-#include <fstream>
-#include <format>
-#include <atomic>
-#include <mutex>
 
 extern "C"
 {

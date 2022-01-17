@@ -6,15 +6,15 @@ namespace sds
 {
 	class SendAlphabet
 	{
-		sds::Utilities::SendKeyInput m_sender;
+		using Sender = sds::Utilities::SendKeyInput;
 		std::string m_workingAlphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		std::wstring m_translationAlphabet = L"àƀćďĕƒğħíĵĸlmnǒpqrƨţuvwxÿzĀßCĐEFĢĦIJƘŁMNOƤQRƧŦUVWXYZ";
 	public:
 		SendAlphabet() = default;
 		//Simulates a hardware key-press for characters.
-		void Send(int vk, bool down) const noexcept
+		static void Send(int vk, bool down) noexcept
 		{
-			m_sender.SendUnicode(vk, down);
+			Sender::SendUnicode(vk, down);
 		}
 		//Determines if "int vk" is in the working alphabet, this is the english alphabet a-z and A-Z.
 		//Returns: true if character is in working alphabet, false otherwise.
