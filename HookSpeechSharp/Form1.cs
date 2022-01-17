@@ -7,7 +7,7 @@ namespace HookSpeechSharp
         private const string MsgTogglehooksEnable = "Enable";
         private const string MsgBadTranslation = "Can't update translation alphabet, most likely bad string length.";
         private const string MsgBadError = "Error";
-        private readonly HookProcDllWrapper dllWrapper = new HookProcDllWrapper();
+        private readonly HookProcDllWrapper dllWrapper = new();
         public HssMainForm()
         {
             InitializeComponent();
