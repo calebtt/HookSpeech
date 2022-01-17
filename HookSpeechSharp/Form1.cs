@@ -34,6 +34,7 @@ namespace HookSpeechSharp
                 tb1.MaximumSize = new(width, height);
                 tb1.MinimumSize = new(width, height);
                 //tb1.Padding = new(10, 10, 10, 10);
+                tb1.BorderStyle = BorderStyle.FixedSingle;
                 tb1.TextAlign = HorizontalAlignment.Center;
                 tb1.Visible = true;
                 this.flowLayoutPanel1.Controls.Add(tb1);
@@ -51,6 +52,7 @@ namespace HookSpeechSharp
                 tb1.MaximumSize = new(width, height);
                 tb1.MinimumSize = new(width, height);
                 //tb1.Padding = new(10, 10, 10, 10);
+                tb1.BorderStyle = BorderStyle.FixedSingle;
                 tb1.TextAlign = HorizontalAlignment.Center;
                 tb1.Visible = true;
                 this.flowLayoutPanel1.Controls.Add(tb1);

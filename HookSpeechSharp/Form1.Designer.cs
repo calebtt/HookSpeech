@@ -83,6 +83,8 @@
             this.tbxAlphabetChars.Size = new System.Drawing.Size(532, 29);
             this.tbxAlphabetChars.TabIndex = 2;
             this.tbxAlphabetChars.Text = "[error]";
+            this.tbxAlphabetChars.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tbxAlphabetChars.WordWrap = false;
             // 
             // btnUpdateAlphabet
             // 
