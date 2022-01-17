@@ -7,18 +7,17 @@ namespace HookSpeechSharp
         private const string MsgTogglehooksEnable = "Enable";
         private const string MsgBadTranslation = "Can't update translation alphabet, most likely bad string length.";
         private const string MsgBadError = "Error";
-        private readonly HookProcDllWrapper dllWrapper = new();
         public HssMainForm()
         {
             InitializeComponent();
-            dllWrapper.AddHooks();
+            HookProcDllWrapper.AddHooks();
             UpdateTranslationBox();
             BuildTextBoxes();
         }
         private void BuildTextBoxes()
         {
-            string working = dllWrapper.GetWorkingAlphabet();
-            string translation = dllWrapper.GetTranslationAlphabet();
+            string working = HookProcDllWrapper.GetWorkingAlphabet();
+            string translation = HookProcDllWrapper.GetTranslationAlphabet();
             const int width = 16;
             const int height = 18;
             const float fontSize = 8.5f;
@@ -60,7 +59,7 @@ namespace HookSpeechSharp
 
         private void UpdateTextBoxes()
         {
-            string current = dllWrapper.GetWorkingAlphabet() + dllWrapper.GetTranslationAlphabet();
+            string current = HookProcDllWrapper.GetWorkingAlphabet() + HookProcDllWrapper.GetTranslationAlphabet();
             for (int i = 0; i < NumElements*2; i++)
             {
                 string charValue = current.ElementAt(i).ToString();
@@ -69,30 +68,30 @@ namespace HookSpeechSharp
         }
         private void UpdateTranslationBox()
         {
-            tbxAlphabetChars.Text = dllWrapper.GetTranslationAlphabet();
+            tbxAlphabetChars.Text = HookProcDllWrapper.GetTranslationAlphabet();
         }
 
         private void UpdateToggleHooksButton()
         {
-            this.btnToggleEnabled.Text = dllWrapper.IsHooked() ? MsgTogglehooksDisable : MsgTogglehooksEnable;
+            this.btnToggleEnabled.Text = HookProcDllWrapper.IsHooked() ? MsgTogglehooksDisable : MsgTogglehooksEnable;
         }
 
         private void btnToggleEnabled_Click(object sender, EventArgs e)
         {
-            if (dllWrapper.IsHooked())
+            if (HookProcDllWrapper.IsHooked())
             {
-                dllWrapper.RemoveHooks();
+                HookProcDllWrapper.RemoveHooks();
             }
             else
             {
-                dllWrapper.AddHooks();
+                HookProcDllWrapper.AddHooks();
             }
             UpdateToggleHooksButton();
         }
 
         private void btnUpdateAlphabet_Click(object sender, EventArgs e)
         {
-            if(!dllWrapper.SetTranslationAlphabet(tbxAlphabetChars.Text))
+            if(!HookProcDllWrapper.SetTranslationAlphabet(tbxAlphabetChars.Text))
             {
                 MessageBox.Show(MsgBadTranslation, MsgBadError, MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
             }
@@ -102,7 +101,7 @@ namespace HookSpeechSharp
 
         private void HssMainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            dllWrapper.RemoveHooks();
+            HookProcDllWrapper.RemoveHooks();
         }
     }
 }

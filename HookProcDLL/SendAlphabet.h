@@ -11,7 +11,7 @@ namespace sds
 	public:
 		SendAlphabet() = default;
 		//Simulates a hardware key-press for characters.
-		static void Send(int vk, bool down) noexcept
+		void Send(int vk, bool down) const noexcept
 		{
 			Sender::SendUnicode(vk, down);
 		}

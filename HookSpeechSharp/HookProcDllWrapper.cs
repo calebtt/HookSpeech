@@ -2,15 +2,9 @@
 
 namespace HookSpeechSharp
 {
-    public class HookProcDllWrapper
+    public static class HookProcDllWrapper
     {
-        ~HookProcDllWrapper()
-        {
-            if (HookProcDllImports.IsHooked())
-                HookProcDllImports.RemoveHooks();
-        }
-
-        public string GetTranslationAlphabet()
+        public static string GetTranslationAlphabet()
         {
             bool wasHooked = IsHooked();
             if (wasHooked)
@@ -31,7 +25,7 @@ namespace HookSpeechSharp
             return String.Empty;
         }
 
-        public bool SetTranslationAlphabet(string newAlphabet)
+        public static bool SetTranslationAlphabet(string newAlphabet)
         {
             bool wasHooked = IsHooked();
             if (wasHooked)
@@ -42,7 +36,7 @@ namespace HookSpeechSharp
             return res;
         }
 
-        public string GetWorkingAlphabet()
+        public static string GetWorkingAlphabet()
         {
             IntPtr p = HookProcDllImports.GetWorkingAlphabet();
             if (p != IntPtr.Zero)
@@ -56,17 +50,17 @@ namespace HookSpeechSharp
             return String.Empty;
         }
 
-        public bool IsHooked()
+        public static bool IsHooked()
         {
             return HookProcDllImports.IsHooked();
         }
 
-        public bool RemoveHooks()
+        public static bool RemoveHooks()
         {
             return HookProcDllImports.RemoveHooks();
         }
 
-        public bool AddHooks()
+        public static bool AddHooks()
         {
             return HookProcDllImports.AddHooks();
         }
