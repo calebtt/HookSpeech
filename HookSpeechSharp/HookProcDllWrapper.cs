@@ -4,10 +4,6 @@ namespace HookSpeechSharp
 {
     public class HookProcDllWrapper
     {
-        public HookProcDllWrapper()
-        {
-        }
-
         ~HookProcDllWrapper()
         {
             if (HookProcDllImports.IsHooked())
