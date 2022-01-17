@@ -12,7 +12,7 @@ namespace sds
 	public:
 		SendAlphabet() = default;
 		//Simulates a hardware key-press for characters.
-		void Send(int vk, bool down)
+		void Send(int vk, bool down) const noexcept
 		{
 			m_sender.SendUnicode(vk, down);
 		}
