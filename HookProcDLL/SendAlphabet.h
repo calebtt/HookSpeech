@@ -33,7 +33,7 @@ namespace sds
 			else if(!isCapsDown && !isShiftDown)
 				capsAware = std::tolower(vk);
 			const size_t ind = m_workingAlphabet.find(static_cast<char>(capsAware));
-			if(ind != std::string::npos)
+			if(ind != decltype(m_workingAlphabet)::npos)
 			{
 				return m_translationAlphabet[ind];
 			}

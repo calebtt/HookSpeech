@@ -52,3 +52,15 @@ Temporary Items
 /HookProcDLL/x64/Release
 /HookSpeechSharp/bin/Release/net6.0-windows
 /HookSpeechSharp/Properties/PublishProfiles
+/HookProcDLL/Debug/HookProcDLL.tlog/CL.command.1.tlog
+/HookProcDLL/Debug/HookProcDLL.tlog
+/HookProcDLL/Debug/dllmain.obj
+/HookProcDLL/Debug/HookProcDLL.ilk
+/HookProcDLL/Debug/HookProcDLL.dll.recipe
+/HookProcDLL/Debug/HookProc DLL.log
+/HookProcDLL/Debug/_IsIncrementalBuild
+/HookProcDLL/Debug/vcpkg.applocal.log
+/HookProcDLL/Debug/vc142.pdb
+/HookProcDLL/Debug/vc142.idb
+/HookProcDLL/Debug
+/Debug
