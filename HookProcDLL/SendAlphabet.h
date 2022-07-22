@@ -27,11 +27,10 @@ namespace sds
 			const std::bitset<capsBitLength> capsLockBits(CapsLockState);
 			const bool isShiftDown = shiftBits[shiftBitLength-1];
 			const bool isCapsDown = capsLockBits[0];
-			int capsAware = vk;
-			if (isShiftDown && isCapsDown)
-				capsAware = std::tolower(vk);
-			else if(!isCapsDown && !isShiftDown)
-				capsAware = std::tolower(vk);
+			auto capsAware = static_cast<unsigned char>(vk);
+			const bool isLowerPossible = std::isalnum(capsAware);
+			if (isLowerPossible && ((isShiftDown && isCapsDown) || (!isCapsDown && !isShiftDown)))
+				capsAware = static_cast<unsigned char>(std::tolower(vk));
 			const size_t ind = m_workingAlphabet.find(static_cast<char>(capsAware));
 			if(ind != decltype(m_workingAlphabet)::npos)
 			{
