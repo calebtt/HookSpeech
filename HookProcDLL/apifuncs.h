@@ -11,8 +11,8 @@ extern "C"
 		inline static sds::SendAlphabet sender;
 		inline static std::string workingAlphabetChars;
 		inline static std::wstring translationAlphabetChars;
-		inline static std::atomic<HHOOK> hookHandle = NULL;
-		inline static constexpr size_t SZ_MODULE_NAME = 512;
+		inline static std::atomic<HHOOK> hookHandle{ nullptr };
+		inline static constexpr std::size_t SZ_MODULE_NAME{ 512 };
 	}
 	// Forward declarations section.
 	__declspec(dllexport) inline bool SetTranslationAlphabet(const wchar_t *str);
@@ -60,11 +60,11 @@ extern "C"
 		if (!StaticInstance::hookHandle)
 		{
 			char moduleName[StaticInstance::SZ_MODULE_NAME]{};
-			const DWORD readChars = GetModuleFileNameA(NULL, moduleName, StaticInstance::SZ_MODULE_NAME); // if it won't fit, it only tries to put SZ_MODULE_NAME chars.
+			const DWORD readChars = GetModuleFileNameA(nullptr, moduleName, StaticInstance::SZ_MODULE_NAME); // if it won't fit, it only tries to put SZ_MODULE_NAME chars.
 			if(readChars < StaticInstance::SZ_MODULE_NAME)
 				StaticInstance::hookHandle = ::SetWindowsHookExA(WH_KEYBOARD_LL, keyboardHookProcedure, GetModuleHandleA(moduleName), NULL);
 		}
-		return StaticInstance::hookHandle != NULL;
+		return StaticInstance::hookHandle != nullptr;
 	}
 	__declspec(dllexport) inline bool RemoveHooks()
 	{
@@ -72,30 +72,30 @@ extern "C"
 		//a key event and not unhook immediately.
 		StaticInstance::LockType tempLock(StaticInstance::locker);
 		::UnhookWindowsHookEx(StaticInstance::hookHandle);
-		StaticInstance::hookHandle = NULL;
+		StaticInstance::hookHandle = nullptr;
 		return true;
 	}
 	//Can be used in the future, a mouse hook procedure.
 	inline LRESULT mouseHookProcedure(int code, WPARAM wParam, LPARAM lParam)
 	{
 		if (code < 0)
-			return CallNextHookEx(NULL, code, wParam, lParam);
+			return CallNextHookEx(nullptr, code, wParam, lParam);
 		if (code == HC_ACTION)
 		{
 			//Do stuff here.
 		}
 
-		return CallNextHookEx(NULL, code, wParam, lParam);
+		return CallNextHookEx(nullptr, code, wParam, lParam);
 	}
 	//The low level keyboard hook procedure.
 	inline LRESULT keyboardHookProcedure(int code, WPARAM wParam, LPARAM lParam)
 	{
 		if (code < 0)
-			return CallNextHookEx(NULL, code, wParam, lParam);
+			return CallNextHookEx(nullptr, code, wParam, lParam);
 		if (code == HC_ACTION)
 		{
 			//Retrieve information from keyboard hook structure.
-			const PKBDLLHOOKSTRUCT kb = (PKBDLLHOOKSTRUCT)lParam;
+			const auto* kb = (PKBDLLHOOKSTRUCT)lParam;
 			const wchar_t translated = StaticInstance::sender.IsTranslatable(static_cast<int>(kb->vkCode));
 			if (translated)
 			{
@@ -111,6 +111,6 @@ extern "C"
 				}
 			}
 		}
-		return CallNextHookEx(NULL, code, wParam, lParam);
+		return CallNextHookEx(nullptr, code, wParam, lParam);
 	}
 }

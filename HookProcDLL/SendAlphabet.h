@@ -11,9 +11,9 @@ namespace sds
 	public:
 		SendAlphabet() = default;
 		//Simulates a hardware key-press for characters.
-		void Send(int vk, bool down) const noexcept
+		static void Send(int vk, bool down) noexcept
 		{
-			Sender::SendUnicode(vk, down);
+			Sender::SendVirtualKeyUnicode(vk, down);
 		}
 		//Determines if "int vk" is in the working alphabet, this is the english alphabet a-z and A-Z.
 		//Returns: true if character is in working alphabet, false otherwise.
@@ -22,16 +22,17 @@ namespace sds
 			const SHORT ShiftState = GetKeyState(static_cast<int>((VK_SHIFT))); // shift key
 			const SHORT CapsLockState = GetKeyState(VK_CAPITAL); // caps lock key
 			constexpr int shiftBitLength = sizeof(SHORT) * 8;
+			constexpr std::size_t shiftBitLastIndex = shiftBitLength - 1;
 			constexpr int capsBitLength = sizeof(SHORT) * 8;
 			const std::bitset<shiftBitLength> shiftBits(ShiftState);
 			const std::bitset<capsBitLength> capsLockBits(CapsLockState);
-			const bool isShiftDown = shiftBits[shiftBitLength-1];
+			const bool isShiftDown = shiftBits[shiftBitLastIndex];
 			const bool isCapsDown = capsLockBits[0];
 			auto capsAware = static_cast<unsigned char>(vk);
 			const bool isLowerPossible = std::isalnum(capsAware);
 			if (isLowerPossible && ((isShiftDown && isCapsDown) || (!isCapsDown && !isShiftDown)))
 				capsAware = static_cast<unsigned char>(std::tolower(vk));
-			const size_t ind = m_workingAlphabet.find(static_cast<char>(capsAware));
+			const std::size_t ind = m_workingAlphabet.find(static_cast<char>(capsAware));
 			if(ind != decltype(m_workingAlphabet)::npos)
 			{
 				return m_translationAlphabet[ind];
@@ -57,7 +58,7 @@ namespace sds
 			return true;
 
 		}
-		size_t GetWorkingAlphabetSize() const noexcept
+		std::size_t GetWorkingAlphabetSize() const noexcept
 		{
 			return m_workingAlphabet.size();
 		}
@@ -69,7 +70,7 @@ namespace sds
 		{
 			return m_translationAlphabet;
 		}
-		size_t GetTranslationAlphabetSize() const noexcept
+		std::size_t GetTranslationAlphabetSize() const noexcept
 		{
 			return m_translationAlphabet.size();
 		}

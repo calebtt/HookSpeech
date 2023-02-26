@@ -27,5 +27,6 @@
 #include <fstream>
 #include <atomic>
 #include <mutex>
+#include <unordered_map>
 // Files I want to make sure are compiled into the DLL
 #include "apifuncs.h"
